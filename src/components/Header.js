@@ -25,16 +25,17 @@ const Wrapper = styled.header`
 
   .button-default {
     margin: 5px;
-    padding: 3px 7px;
+    padding: 3px 5px;
     font-size: 0.8rem;
-    color: rgb(122, 173, 255);
+    font-weight: 600;
+    color: #00B7FF;
     background-color: #ededed;
     border: 1px solid #ededed;
     border-radius: 5px;
     transition: 0.3s all ease;
 
     :hover {
-      background-color: rgb(122, 173, 255);
+      background-color: #00B7FF;
       color: white;
       cursor: pointer;
     }
@@ -53,23 +54,7 @@ export default function Header ({ onLogin, isLogined }) {
     return navigate("/");
   }
 
-  async function handleSignIn() {
-    try {
-      await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/signin`);
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  async function handleSignUp() {
-    try {
-      await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/signup`);
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  const [username, setUsername] = useState(JSON.parse(localStorage.getItem("user"))?.displayName);
+  const [username, setUsername] = useState("");
 
   return (
     <Wrapper>
@@ -80,8 +65,8 @@ export default function Header ({ onLogin, isLogined }) {
       {isLogined
         ? <button className="button-default" onClick={handleSignOut}>Sign out</button>
         : <div>
-            <button className="button-default" onClick={handleSignIn}>Sign in</button>
-            <button className="button-default" onClick={handleSignUp}>Sign Up</button>
+            <Link className="button-default" to="/signup">Sign Up</Link>
+            <Link className="button-default" to="/signin">Sign In</Link>
           </div>}
     </Wrapper>
   );
