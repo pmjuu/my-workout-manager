@@ -4,8 +4,8 @@ import Daily from "./common/Daily";
 const Wrapper = styled.section`
   /* display: grid; */
   min-width: 300px;
-  width: 600px;
-  max-width: 600px;
+  width: 500px;
+  max-width: 500px;
   height: 90vh;
   box-shadow: 0px 1px 5px 1px rgba(255, 255, 255, 0.1);
 
@@ -33,7 +33,17 @@ const Wrapper = styled.section`
 `;
 
 export default function Calendar() {
-  const dayTypeList = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+  const dayTypeList = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const prevWeeks = 6;
+
+  const dateList = [];
+  const date = new Date();
+  date.setDate(date.getDate() - date.getDay() - prevWeeks * 7);
+
+  for (let i = 0; i < 70; i += 1) {
+    dateList.push(new Date(date.toISOString()));
+    date.setDate(date.getDate() + 1);
+  }
 
   return (
     <Wrapper>
@@ -41,7 +51,7 @@ export default function Calendar() {
         {dayTypeList.map((day, i) => <div className="day" key={i}>{day}</div>)}
       </div>
       <div className="dates">
-        {Array.from(Array(80)).map(i => <Daily />)}
+        {dateList.map(date => <Daily key={date.toISOString()} date={date} />)}
       </div>
     </Wrapper>
   );
