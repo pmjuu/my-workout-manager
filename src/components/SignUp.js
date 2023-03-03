@@ -39,7 +39,7 @@ export default function SignUp() {
         {/* <h2>Optional</h2>
         <div>Main workout category: <input name="mainCategory" /></div>
         <div>Workout Places: <input name="places" /></div> */}
-        <button className="button-auth" onClick={handleSubmit}>Sign up</button>
+        <button className="button-default" onClick={handleSubmit}>Sign up</button>
     </Wrapper>
   );
 }

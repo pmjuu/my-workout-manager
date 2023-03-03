@@ -10,7 +10,15 @@ body {
   color: white;
 }
 
-.button-auth {
+select:focus {
+  outline: none;
+}
+
+input:focus {
+  outline: none;
+}
+
+.button-default {
   margin: 5px;
   padding: 3px 5px;
   font-size: 0.8rem;
@@ -22,7 +30,7 @@ body {
   transition: 0.3s all ease;
 }
 
-.button-auth:hover {
+.button-default:hover {
   background-color: #00B7FF;
   color: white;
   cursor: pointer;

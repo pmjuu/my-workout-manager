@@ -28,7 +28,7 @@ export default function SignIn({ onLogin }) {
       <h1>Sign In</h1>
       <div>Email: <input name="email" onChange={e => setEmail(e.target.value)} required /></div>
       <div>Password: <input type="password" name="password" onChange={e => setPassword(e.target.value)} required /></div>
-      <button className="button-auth" onClick={handleSignIn}>Sign in</button>
+      <button className="button-default" onClick={handleSignIn}>Sign in</button>
     </Wrapper>
   );
 }

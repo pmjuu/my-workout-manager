@@ -22,24 +22,6 @@ const Wrapper = styled.header`
     color: #00B7FF;
     text-decoration: none;
   }
-
-  .button-default {
-    margin: 5px;
-    padding: 3px 5px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #00B7FF;
-    background-color: #ededed;
-    border: 1px solid #ededed;
-    border-radius: 5px;
-    transition: 0.3s all ease;
-
-    :hover {
-      background-color: #00B7FF;
-      color: white;
-      cursor: pointer;
-    }
-  }
 `;
 
 export default function Header ({ onLogin, isLogined }) {
