@@ -28,8 +28,7 @@ export default function SignUp() {
     <Wrapper>
       <h1>Sign Up</h1>
       <div>
-        영문, 숫자 조합으로 9 ~ 20 자리로 가능합니다.
-        사용 가능 특수문자 *
+        영문, 숫자 조합으로 4 ~ 9 자리로 가능합니다.
       </div>
         <h2>Essential</h2>
         <div>Email: <input name="email" onChange={e => setEmail(e.target.value)} required /></div>

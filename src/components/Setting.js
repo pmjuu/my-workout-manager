@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-const Wrapper = styled.section`
+const Wrapper = styled.div`
   .setting {
     padding: 0 4px;
     font-size: 1.2rem;
@@ -15,6 +16,7 @@ const Wrapper = styled.section`
 
 export default function Setting() {
   axios.defaults.withCredentials = true;
+  const isLogined = useSelector(state => state.login.isLogined);
   const [errorHTML, setErrorHTML] = useState(null);
   const [category, setCategory] = useState("");
   const [place, setPlace] = useState("");
@@ -22,8 +24,10 @@ export default function Setting() {
   const [placeList, setPlaceList] = useState(null);
 
   useEffect(() => {
-    showCategoryList();
-    showPlaceList();
+    if (isLogined) {
+      showCategoryList();
+      showPlaceList();
+    }
   }, []);
 
   async function showCategoryList() {
@@ -37,8 +41,8 @@ export default function Setting() {
 
   async function addCategory() {
     try {
-      await axios.post(`${process.env.REACT_APP_SERVER_URL}/setting/category`, { category });
       setCategory("");
+      await axios.post(`${process.env.REACT_APP_SERVER_URL}/setting/category`, { category });
       showCategoryList();
     } catch (err) {
       setErrorHTML(err.response.data);
@@ -56,8 +60,8 @@ export default function Setting() {
 
   async function addPlace() {
     try {
-      await axios.post(`${process.env.REACT_APP_SERVER_URL}/setting/place`, { place });
       setPlace("");
+      await axios.post(`${process.env.REACT_APP_SERVER_URL}/setting/place`, { place });
       showPlaceList();
     } catch (err) {
       setErrorHTML(err.response.data);

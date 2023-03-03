@@ -2,12 +2,13 @@ import styled from "styled-components";
 import { useState } from "react";
 import Daily from "./common/Daily";
 
-const Wrapper = styled.section`
+const Wrapper = styled.div`
   display: flex;
-  min-width: 500px;
-  width: 500px;
-  max-width: 500px;
   height: 90vh;
+
+  @media only screen and (min-device-width : 375px) and (max-device-width : 479px) {
+    flex-direction: column;
+  }
 
   .main-calendar {
     box-shadow: 0px 1px 5px 1px rgba(255, 255, 255, 0.1);
@@ -47,12 +48,12 @@ export default function Calendar() {
     return defaultDayList.map((day, i) => defaultDayList[(firstDayIndex + i) % 7]);
   }
 
-  const prevWeeks = 4;
+  const prevWeeks = 5;
   const dateList = [];
   const date = new Date();
   date.setDate(date.getDate() - date.getDay() + defaultDayList.indexOf(firstDay) - prevWeeks * 7);
 
-  for (let i = 0; i < 35; i += 1) {
+  for (let i = 0; i < 42; i += 1) {
     dateList.push(new Date(date.toISOString()));
     date.setDate(date.getDate() + 1);
   }
