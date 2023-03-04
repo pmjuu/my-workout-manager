@@ -18,7 +18,7 @@ export default function SignIn() {
 
   async function handleSignIn() {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/signin`, { email, password });
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}auth/signin`, { email, password });
       localStorage.setItem("user-mwm", JSON.stringify(response.data.user));
       dispatch(setUser(response.data.user));
       navigate("/");
