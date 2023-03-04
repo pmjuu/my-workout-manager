@@ -32,7 +32,7 @@ export default function Setting() {
 
   async function showCategoryList() {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}setting/category`);
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/setting/category`);
       setCategoryList(response.data.categories);
     } catch (err) {
       setErrorHTML(err.response.data);
@@ -42,7 +42,7 @@ export default function Setting() {
   async function addCategory() {
     try {
       setCategory("");
-      await axios.post(`${process.env.REACT_APP_SERVER_URL}setting/category`, { category });
+      await axios.post(`${process.env.REACT_APP_SERVER_URL}/setting/category`, { category });
       showCategoryList();
     } catch (err) {
       setErrorHTML(err.response.data);
@@ -51,7 +51,7 @@ export default function Setting() {
 
   async function showPlaceList() {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}setting/place`);
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/setting/place`);
       setPlaceList(response.data.places);
     } catch (err) {
       setErrorHTML(err.response.data);
@@ -61,7 +61,7 @@ export default function Setting() {
   async function addPlace() {
     try {
       setPlace("");
-      await axios.post(`${process.env.REACT_APP_SERVER_URL}setting/place`, { place });
+      await axios.post(`${process.env.REACT_APP_SERVER_URL}/setting/place`, { place });
       showPlaceList();
     } catch (err) {
       setErrorHTML(err.response.data);
