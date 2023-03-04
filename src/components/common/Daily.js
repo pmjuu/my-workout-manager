@@ -9,10 +9,6 @@ const Wrapper = styled.div`
   height: 100px;
   border: 1px solid #ededed;
 
-  @media only screen and (min-device-width : 375px) and (max-device-width : 479px) {
-    width: 50px;
-  }
-
   .date {
     margin-bottom: 3px;
     color: ${props => props.dateColor};
@@ -59,6 +55,18 @@ const Wrapper = styled.div`
     border-color: #ededed;
     color: white;
   }
+
+  @media only screen and (min-device-width : 375px) and (max-device-width : 479px) {
+    width: 50px;
+
+    select {
+      padding: 0 3px;
+    }
+
+    select.category {
+      font-size: 0.7rem;
+    }
+  }
 `;
 
 export default function Daily({ date, setErrorHTML, placeList, categoryList }) {
@@ -66,6 +74,7 @@ export default function Daily({ date, setErrorHTML, placeList, categoryList }) {
   const displayedDate = date.toISOString().slice(0,10);
   const todayDate = new Date().toISOString().slice(0,10);
   const [displayedPlace, setDisplayedPlace] = useState("");
+  const [displayedCategory, setDisplayedCategory] = useState("");
 
   useEffect(() => {
     if (isLogined) {
@@ -76,22 +85,35 @@ export default function Daily({ date, setErrorHTML, placeList, categoryList }) {
   async function showDisplayedContents() {
     try {
       const response = await customAxios.get(`${process.env.REACT_APP_SERVER_URL}/daily/${displayedDate}`);
-      response.data?.daily && setDisplayedPlace(response.data.daily.place);
+
+      if (response.data?.daily) {
+        setDisplayedPlace(response.data.daily.place);
+        setDisplayedCategory(response.data.daily.category);
+      }
     } catch (err) {
       setErrorHTML(err.response.data);
     }
   }
 
-  async function submitCategory() {}
+  async function addCategory(e) {
+    try {
+      const data = {
+        date: displayedDate,
+        category: e.target.value,
+      };
+      await customAxios.post(`${process.env.REACT_APP_SERVER_URL}/daily/category`, data);
+    } catch (err) {
+      setErrorHTML(err.response.data);
+    }
+  }
 
-  async function submitPlace(e) {
+  async function addPlace(e) {
     try {
       const data = {
         date: displayedDate,
         place: e.target.value,
       };
       await customAxios.post(`${process.env.REACT_APP_SERVER_URL}/daily/place`, data);
-      setDisplayedPlace(e.target.value);
     } catch (err) {
       setErrorHTML(err.response.data);
     }
@@ -100,13 +122,13 @@ export default function Daily({ date, setErrorHTML, placeList, categoryList }) {
   return (
     <Wrapper dateColor={displayedDate === todayDate ? "#00B7FF" : ""}>
       <div className="date" >{date.getDate()}</div>
-      <select className="category" onChange={submitCategory}>
+      <select className="category" onChange={addCategory}>
         <option value="default"></option>
-        {categoryList?.map(item => <option key={item} value={item}>{item}</option>)}
+        {categoryList?.map(item => <option key={item} value={item} selected={item === displayedCategory}>{item}</option>)}
       </select>
-      <select onChange={submitPlace}>
+      <select onChange={addPlace}>
         <option value="default"></option>
-        {placeList?.map(item => <option selected={item === displayedPlace} value={item} key={item}>{item}</option>)}
+        {placeList?.map(item => <option key={item} value={item} selected={item === displayedPlace}>{item}</option>)}
       </select>
       {/* <input className="text-input" />
       <input className="text-input" /> */}

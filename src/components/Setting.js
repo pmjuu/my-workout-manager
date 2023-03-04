@@ -79,13 +79,17 @@ export default function Setting() {
     }
   }
 
+  function deleteCategory(e) {
+    const item = e.target.parentElement.__reactFiber$38hiqpvrwtx.key;
+  }
+
   return (
     <Wrapper>
       <h1>Setting</h1>
       <article>
         <h2>Workout Categories</h2>
         <ul>
-          {categoryList?.map(item => <li key={item}>{item} <button className="button-default delete">X</button></li>)}
+          {categoryList?.map(item => <li key={item}>{item} <button className="button-default delete" onClick={deleteCategory}>X</button></li>)}
         </ul>
         <input value={category} onChange={e => setCategory(e.target.value)} />
         <button className="button-default setting" onClick={addCategory}>+</button>
