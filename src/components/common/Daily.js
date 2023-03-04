@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 const Wrapper = styled.div`
   min-width: 50px;
-  width: 70px;
+  width: 80px;
   height: 100px;
   border: 1px solid #ededed;
 

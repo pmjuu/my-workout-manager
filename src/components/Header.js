@@ -50,18 +50,22 @@ export default function Header () {
   const username = useSelector(state => state.login.name);
 
   async function handleSignOut() {
-    await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/signout`);
     window.localStorage.clear();
     dispatch(removeUser());
 
-    return navigate("/");
+    try {
+      await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/signout`);
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
     <Wrapper>
       <span className="title"><Link to="/">My Workout Manager</Link></span>
-      <span><Link to="/setting">Setting</Link></span>
-      <span><Link to="/analysis">Analysis</Link></span>
+      <span><Link to={isLogined ? "/setting" : "/signin"}>Setting</Link></span>
+      <span><Link to={isLogined ? "/analysis" : "/signin"}>Analysis</Link></span>
       {isLogined
         ? <div>
             <span>user : {username}</span>
