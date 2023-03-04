@@ -32,7 +32,7 @@ export default function Setting() {
 
   async function showCategoryList() {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/setting/category`);
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}setting/category`);
       setCategoryList(response.data.categories);
     } catch (err) {
       setErrorHTML(err.response.data);
@@ -51,7 +51,7 @@ export default function Setting() {
 
   async function showPlaceList() {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/setting/place`);
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}setting/place`);
       setPlaceList(response.data.places);
     } catch (err) {
       setErrorHTML(err.response.data);
