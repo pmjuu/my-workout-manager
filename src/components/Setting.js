@@ -1,12 +1,24 @@
 import styled from "styled-components";
-import axios from "axios";
+import customAxios from "../utils/customAxios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const Wrapper = styled.div`
-  .setting {
+  .button-default.setting {
     padding: 0 4px;
     font-size: 1.2rem;
+  }
+
+  .button-default.delete {
+    padding: 0 3px;
+    background-color: transparent;
+    border: none;
+    color: #AF4141;
+
+    :hover {
+      background-color: #AF4141;
+      color: white;
+    }
   }
 
   .warning {
@@ -15,7 +27,6 @@ const Wrapper = styled.div`
 `;
 
 export default function Setting() {
-  axios.defaults.withCredentials = true;
   const isLogined = useSelector(state => state.login.isLogined);
   const [errorHTML, setErrorHTML] = useState(null);
   const [category, setCategory] = useState("");
@@ -32,7 +43,7 @@ export default function Setting() {
 
   async function showCategoryList() {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/setting/category`);
+      const response = await customAxios.get(`${process.env.REACT_APP_SERVER_URL}/setting/category`);
       setCategoryList(response.data.categories);
     } catch (err) {
       setErrorHTML(err.response.data);
@@ -42,7 +53,7 @@ export default function Setting() {
   async function addCategory() {
     try {
       setCategory("");
-      await axios.post(`${process.env.REACT_APP_SERVER_URL}/setting/category`, { category });
+      await customAxios.post(`${process.env.REACT_APP_SERVER_URL}/setting/category`, { category });
       showCategoryList();
     } catch (err) {
       setErrorHTML(err.response.data);
@@ -51,7 +62,7 @@ export default function Setting() {
 
   async function showPlaceList() {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/setting/place`);
+      const response = await customAxios.get(`${process.env.REACT_APP_SERVER_URL}/setting/place`);
       setPlaceList(response.data.places);
     } catch (err) {
       setErrorHTML(err.response.data);
@@ -61,7 +72,7 @@ export default function Setting() {
   async function addPlace() {
     try {
       setPlace("");
-      await axios.post(`${process.env.REACT_APP_SERVER_URL}/setting/place`, { place });
+      await customAxios.post(`${process.env.REACT_APP_SERVER_URL}/setting/place`, { place });
       showPlaceList();
     } catch (err) {
       setErrorHTML(err.response.data);
@@ -74,7 +85,7 @@ export default function Setting() {
       <article>
         <h2>Workout Categories</h2>
         <ul>
-          {categoryList?.map(item => <li key={item}>{item}</li>)}
+          {categoryList?.map(item => <li key={item}>{item} <button className="button-default delete">X</button></li>)}
         </ul>
         <input value={category} onChange={e => setCategory(e.target.value)} />
         <button className="button-default setting" onClick={addCategory}>+</button>

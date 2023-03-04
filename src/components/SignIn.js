@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import axios from "axios";
+import customAxios from "../utils/customAxios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -10,7 +10,6 @@ const Wrapper = styled.div`
 `;
 
 export default function SignIn() {
-  axios.defaults.withCredentials = true;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
@@ -18,8 +17,9 @@ export default function SignIn() {
 
   async function handleSignIn() {
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/signin`, { email, password });
+      const response = await customAxios.post(`${process.env.REACT_APP_SERVER_URL}/auth/signin`, { email, password });
       localStorage.setItem("user-mwm", JSON.stringify(response.data.user));
+      localStorage.setItem("signinToken", JSON.stringify(response.data.token));
       dispatch(setUser(response.data.user));
       navigate("/");
     } catch (err) {

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import axios from "axios";
+import customAxios from "../utils/customAxios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Daily from "./common/Daily";
@@ -40,7 +40,6 @@ const Wrapper = styled.div`
 `;
 
 export default function Calendar() {
-  axios.defaults.withCredentials = true;
   const isLogined = useSelector(state => state.login.isLogined);
   const defaultDayList = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const [firstDay, setFirstDay] = useState("MON");
@@ -74,7 +73,7 @@ export default function Calendar() {
 
   async function getPlaceList() {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/setting/place`);
+      const response = await customAxios.get(`${process.env.REACT_APP_SERVER_URL}/setting/place`);
       setPlaceList(response.data.places);
     } catch (err) {
       setErrorHTML(err.response.data);
@@ -83,7 +82,7 @@ export default function Calendar() {
 
   async function getCategoryList() {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/setting/category`);
+      const response = await customAxios.get(`${process.env.REACT_APP_SERVER_URL}/setting/category`);
       setCategoryList(response.data.categories);
     } catch (err) {
       setErrorHTML(err.response.data);

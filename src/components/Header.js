@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import axios from "axios";
+import customAxios from "../utils/customAxios";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "../features/loginSlice";
@@ -43,7 +43,6 @@ const Wrapper = styled.header`
 `;
 
 export default function Header () {
-  axios.defaults.withCredentials = true;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLogined = useSelector(state => state.login.isLogined);
@@ -54,7 +53,7 @@ export default function Header () {
     dispatch(removeUser());
 
     try {
-      await axios.post(`${process.env.REACT_APP_SERVER_URL}/auth/signout`);
+      await customAxios.post(`${process.env.REACT_APP_SERVER_URL}/auth/signout`);
       navigate("/");
     } catch (err) {
       console.error(err);

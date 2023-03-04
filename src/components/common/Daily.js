@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import axios from "axios";
+import customAxios from "../../utils/customAxios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -62,7 +62,6 @@ const Wrapper = styled.div`
 `;
 
 export default function Daily({ date, setErrorHTML, placeList, categoryList }) {
-  axios.defaults.withCredentials = true;
   const isLogined = useSelector(state => state.login.isLogined);
   const displayedDate = date.toISOString().slice(0,10);
   const todayDate = new Date().toISOString().slice(0,10);
@@ -76,7 +75,7 @@ export default function Daily({ date, setErrorHTML, placeList, categoryList }) {
 
   async function showDisplayedContents() {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/daily/${displayedDate}`);
+      const response = await customAxios.get(`${process.env.REACT_APP_SERVER_URL}/daily/${displayedDate}`);
       response.data?.daily && setDisplayedPlace(response.data.daily.place);
     } catch (err) {
       setErrorHTML(err.response.data);
@@ -91,7 +90,7 @@ export default function Daily({ date, setErrorHTML, placeList, categoryList }) {
         date: displayedDate,
         place: e.target.value,
       };
-      await axios.post(`${process.env.REACT_APP_SERVER_URL}/daily/place`, data);
+      await customAxios.post(`${process.env.REACT_APP_SERVER_URL}/daily/place`, data);
       setDisplayedPlace(e.target.value);
     } catch (err) {
       setErrorHTML(err.response.data);
