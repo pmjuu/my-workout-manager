@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Daily from "./common/Daily";
 
 const Wrapper = styled.div`
@@ -38,8 +40,10 @@ const Wrapper = styled.div`
 `;
 
 export default function Calendar() {
-  const [firstDay, setFirstDay] = useState("MON");
+  axios.defaults.withCredentials = true;
+  const isLogined = useSelector(state => state.login.isLogined);
   const defaultDayList = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const [firstDay, setFirstDay] = useState("MON");
   const dayList = getDayList(firstDay);
 
   function getDayList(firstDay) {
@@ -49,13 +53,41 @@ export default function Calendar() {
   }
 
   const prevWeeks = 5;
-  const dateList = [];
   const date = new Date();
   date.setDate(date.getDate() - date.getDay() + defaultDayList.indexOf(firstDay) - prevWeeks * 7);
+  const dateList = [];
 
   for (let i = 0; i < 42; i += 1) {
     dateList.push(new Date(date.toISOString()));
     date.setDate(date.getDate() + 1);
+  }
+
+  const [placeList, setPlaceList] = useState(null);
+  const [categoryList, setCategoryList] = useState(null);
+
+  useEffect(() => {
+    if (isLogined) {
+      getPlaceList();
+      getCategoryList();
+    }
+  }, []);
+
+  async function getPlaceList() {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/setting/place`);
+      setPlaceList(response.data.places);
+    } catch (err) {
+      setErrorHTML(err.response.data);
+    }
+  }
+
+  async function getCategoryList() {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/setting/category`);
+      setCategoryList(response.data.categories);
+    } catch (err) {
+      setErrorHTML(err.response.data);
+    }
   }
 
   const [errorHTML, setErrorHTML] = useState(null);
@@ -72,7 +104,7 @@ export default function Calendar() {
           {dayList.map((day, i) => <div className="day" key={i}>{day}</div>)}
         </div>
         <div className="dates">
-          {dateList.map(date => <Daily key={date.toISOString()} date={date} setErrorHTML={setErrorHTML} />)}
+          {dateList.map(date => <Daily key={date.toISOString()} date={date} setErrorHTML={setErrorHTML} placeList={placeList} categoryList={categoryList} />)}
         </div>
         <article className="warning" dangerouslySetInnerHTML={{ __html: errorHTML }} />
       </div>

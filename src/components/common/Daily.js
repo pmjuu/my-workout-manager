@@ -38,6 +38,11 @@ const Wrapper = styled.div`
     color: white;
   }
 
+  select.category {
+    font-size: 0.9rem;
+    color: #a0a0a0;
+  }
+
   .text-input {
     width: 97%;
     border: 1px solid transparent;
@@ -56,40 +61,18 @@ const Wrapper = styled.div`
   }
 `;
 
-export default function Daily({ date, setErrorHTML }) {
+export default function Daily({ date, setErrorHTML, placeList, categoryList }) {
   axios.defaults.withCredentials = true;
   const isLogined = useSelector(state => state.login.isLogined);
   const displayedDate = date.toISOString().slice(0,10);
   const todayDate = new Date().toISOString().slice(0,10);
-  const [categoryList, setCategoryList] = useState(null);
-  const [placeList, setPlaceList] = useState(null);
   const [displayedPlace, setDisplayedPlace] = useState("");
 
   useEffect(() => {
     if (isLogined) {
-      // getCategoryList();
-      getPlaceList();
       showDisplayedContents();
     }
   }, []);
-
-  async function getCategoryList() {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/setting/category`);
-      setCategoryList(response.data.categories);
-    } catch (err) {
-      setErrorHTML(err.response.data);
-    }
-  }
-
-  async function getPlaceList() {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/setting/place`);
-      setPlaceList(response.data.places);
-    } catch (err) {
-      setErrorHTML(err.response.data);
-    }
-  }
 
   async function showDisplayedContents() {
     try {
@@ -118,10 +101,10 @@ export default function Daily({ date, setErrorHTML }) {
   return (
     <Wrapper dateColor={displayedDate === todayDate ? "#00B7FF" : ""}>
       <div className="date" >{date.getDate()}</div>
-      {/* <select onChange={submitCategory}>
+      <select className="category" onChange={submitCategory}>
         <option value="default"></option>
         {categoryList?.map(item => <option key={item} value={item}>{item}</option>)}
-      </select> */}
+      </select>
       <select onChange={submitPlace}>
         <option value="default"></option>
         {placeList?.map(item => <option selected={item === displayedPlace} value={item} key={item}>{item}</option>)}
