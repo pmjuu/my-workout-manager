@@ -2,6 +2,7 @@ import styled from "styled-components";
 import customAxios from "../../utils/customAxios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { format } from "date-fns";
 
 const Wrapper = styled.div`
   min-width: 50px;
@@ -71,8 +72,8 @@ const Wrapper = styled.div`
 
 export default function Daily({ date, setErrorHTML, placeList, categoryList }) {
   const isLogined = useSelector(state => state.login.isLogined);
-  const displayedDate = date.toISOString().slice(0,10);
-  const todayDate = new Date().toISOString().slice(0,10);
+  const displayedDate = format(date, "yyyy-MM-dd");
+  const todayDate = format(new Date(), "yyyy-MM-dd");
   const [displayedPlace, setDisplayedPlace] = useState("");
   const [displayedCategory, setDisplayedCategory] = useState("");
 
@@ -123,15 +124,14 @@ export default function Daily({ date, setErrorHTML, placeList, categoryList }) {
     <Wrapper dateColor={displayedDate === todayDate ? "#00B7FF" : ""}>
       <div className="date" >{date.getDate()}</div>
       <select className="category" onChange={addCategory}>
-        <option value="default"></option>
+        <option value=""></option>
         {categoryList?.map(item => <option key={item} value={item} selected={item === displayedCategory}>{item}</option>)}
       </select>
       <select onChange={addPlace}>
-        <option value="default"></option>
+        <option value=""></option>
         {placeList?.map(item => <option key={item} value={item} selected={item === displayedPlace}>{item}</option>)}
       </select>
-      {/* <input className="text-input" />
-      <input className="text-input" /> */}
+      <input className="text-input" />
     </Wrapper>
   );
 }

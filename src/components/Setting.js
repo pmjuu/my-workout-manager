@@ -36,10 +36,19 @@ export default function Setting() {
 
   useEffect(() => {
     if (isLogined) {
-      showCategoryList();
-      showPlaceList();
+      showUserInfo();
     }
   }, []);
+
+  async function showUserInfo() {
+    try {
+      const response = await customAxios.get(`${process.env.REACT_APP_SERVER_URL}/setting/`);
+      setCategoryList(response.data.user.categories);
+      setPlaceList(response.data.user.places);
+    } catch (err) {
+      setErrorHTML(err.response.data);
+    }
+  }
 
   async function showCategoryList() {
     try {
@@ -52,8 +61,8 @@ export default function Setting() {
 
   async function addCategory() {
     try {
-      setCategory("");
       await customAxios.post(`${process.env.REACT_APP_SERVER_URL}/setting/category`, { category });
+      setCategory("");
       showCategoryList();
     } catch (err) {
       setErrorHTML(err.response.data);
@@ -71,16 +80,34 @@ export default function Setting() {
 
   async function addPlace() {
     try {
-      setPlace("");
       await customAxios.post(`${process.env.REACT_APP_SERVER_URL}/setting/place`, { place });
+      setPlace("");
       showPlaceList();
     } catch (err) {
       setErrorHTML(err.response.data);
     }
   }
 
-  function deleteCategory(e) {
-    const item = e.target.parentElement.__reactFiber$38hiqpvrwtx.key;
+  async function deleteCategory(e) {
+    const item = e.target.parentElement.innerText.slice(0, -2);
+
+    try {
+      await customAxios.delete(`${process.env.REACT_APP_SERVER_URL}/setting/category`, { data: { item } });
+      showCategoryList();
+    } catch (err) {
+      setErrorHTML(err.response.data);
+    }
+  }
+
+  async function deletePlace(e) {
+    const item = e.target.parentElement.innerText.slice(0, -2);
+
+    try {
+      await customAxios.delete(`${process.env.REACT_APP_SERVER_URL}/setting/place`, { data: { item } });
+      showPlaceList();
+    } catch (err) {
+      setErrorHTML(err.response.data);
+    }
   }
 
   return (
@@ -97,7 +124,7 @@ export default function Setting() {
       <article>
         <h2>Workout Places</h2>
         <ul>
-          {placeList?.map(item => <li key={item}>{item}</li>)}
+          {placeList?.map(item => <li key={item}>{item} <button className="button-default delete" onClick={deletePlace}>X</button></li>)}
         </ul>
         <input value={place} onChange={e => setPlace(e.target.value)} />
         <button className="button-default setting" onClick={addPlace}>+</button>

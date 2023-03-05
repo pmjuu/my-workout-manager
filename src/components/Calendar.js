@@ -37,6 +37,10 @@ const Wrapper = styled.div`
     height: 88vh;
     overflow: scroll;
   }
+
+  .warning {
+    width: 400px;
+  }
 `;
 
 export default function Calendar() {
