@@ -5,8 +5,6 @@ import { useSelector } from "react-redux";
 import { format } from "date-fns";
 
 const Wrapper = styled.div`
-  min-width: 50px;
-  width: 80px;
   height: 100px;
   border: 1px solid #ededed;
 
@@ -58,8 +56,6 @@ const Wrapper = styled.div`
   }
 
   @media only screen and (min-device-width : 375px) and (max-device-width : 479px) {
-    width: 50px;
-
     select {
       padding: 0 3px;
     }

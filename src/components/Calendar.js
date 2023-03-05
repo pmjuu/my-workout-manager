@@ -6,10 +6,12 @@ import Daily from "./common/Daily";
 
 const Wrapper = styled.div`
   display: flex;
+  width: 700px;
   height: 90vh;
 
   @media only screen and (min-device-width : 375px) and (max-device-width : 479px) {
     flex-direction: column;
+    width: 350px;
   }
 
   .main-calendar {
