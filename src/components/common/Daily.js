@@ -38,19 +38,19 @@ const Wrapper = styled.div`
     color: #a0a0a0;
   }
 
-  .text-input {
+  .memo {
     width: 97%;
     border: 1px solid transparent;
     background-color: transparent;
     transition: 0.3s all ease;
   }
 
-  .text-input:hover {
+  .memo:hover {
     border-color: #ededed;
     color: white;
   }
 
-  .text-input:focus {
+  .memo:focus {
     border-color: #ededed;
     color: white;
   }
