@@ -35,13 +35,16 @@ const Wrapper = styled.div`
 
   select.category {
     font-size: 0.9rem;
-    color: #a0a0a0;
+    color: #c0c0c0;
   }
 
   .memo {
-    width: 97%;
+    width: 90%;
+    padding: 0 3px;
     border: 1px solid transparent;
     background-color: transparent;
+    font-size: 0.8rem;
+    color: #a0a0a0;
     transition: 0.3s all ease;
   }
 
@@ -67,6 +70,10 @@ const Wrapper = styled.div`
     select.place {
       font-size: 0.9rem;
     }
+
+    .memo {
+      font-size: 0.5rem;
+    }
   }
 `;
 
@@ -76,6 +83,7 @@ export default function Daily({ date, setErrorHTML, placeList, categoryList }) {
   const todayDate = format(new Date(), "yyyy-MM-dd");
   const [displayedPlace, setDisplayedPlace] = useState("");
   const [displayedCategory, setDisplayedCategory] = useState("");
+  const [displayedMemo, setDisplayedMemo] = useState("");
 
   useEffect(() => {
     if (isLogined) {
@@ -90,6 +98,7 @@ export default function Daily({ date, setErrorHTML, placeList, categoryList }) {
       if (response.data?.daily) {
         setDisplayedPlace(response.data.daily.place);
         setDisplayedCategory(response.data.daily.category);
+        setDisplayedMemo(response.data.daily.memo);
       }
     } catch (err) {
       setErrorHTML(err.response.data);
@@ -120,6 +129,20 @@ export default function Daily({ date, setErrorHTML, placeList, categoryList }) {
     }
   }
 
+  async function addMemo(e) {
+    if (!displayedCategory && !displayedPlace && !displayedMemo) return;
+
+    try {
+      const data = {
+        date: displayedDate,
+        memo: e.target.value,
+      };
+      await customAxios.post(`${process.env.REACT_APP_SERVER_URL}/daily/memo`, data);
+    } catch (err) {
+      setErrorHTML(err.response.data);
+    }
+  }
+
   return (
     <Wrapper dateColor={displayedDate === todayDate ? "#00B7FF" : ""}>
       <div className="date" >{date.getDate()}</div>
@@ -131,7 +154,7 @@ export default function Daily({ date, setErrorHTML, placeList, categoryList }) {
         <option value=""></option>
         {placeList?.map(item => <option key={item} value={item} selected={item === displayedPlace}>{item}</option>)}
       </select>
-      <input className="memo" />
+      <input className="memo" defaultValue={displayedMemo} onBlur={addMemo} />
     </Wrapper>
   );
 }
