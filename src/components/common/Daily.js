@@ -61,7 +61,11 @@ const Wrapper = styled.div`
     }
 
     select.category {
-      font-size: 0.7rem;
+      font-size: 0.6rem;
+    }
+
+    select.place {
+      font-size: 0.9rem;
     }
   }
 `;
@@ -123,11 +127,11 @@ export default function Daily({ date, setErrorHTML, placeList, categoryList }) {
         <option value=""></option>
         {categoryList?.map(item => <option key={item} value={item} selected={item === displayedCategory}>{item}</option>)}
       </select>
-      <select onChange={addPlace}>
+      <select className="place" onChange={addPlace}>
         <option value=""></option>
         {placeList?.map(item => <option key={item} value={item} selected={item === displayedPlace}>{item}</option>)}
       </select>
-      <input className="text-input" />
+      <input className="memo" />
     </Wrapper>
   );
 }
