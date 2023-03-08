@@ -17,18 +17,6 @@ const Wrapper = styled.div`
 `;
 
 function App() {
-
-  async function fetchGithub() {
-    try {
-      const response = fetch("https://github.com/pmjuu/my-workout-manager");
-      console.log("response...", response);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  
-  fetchGithub();
-
   return (
     <Wrapper>
       <Header />
